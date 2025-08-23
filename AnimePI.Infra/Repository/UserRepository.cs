@@ -2,11 +2,6 @@
 using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Infra.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnimePI.Infra.Repository
 {

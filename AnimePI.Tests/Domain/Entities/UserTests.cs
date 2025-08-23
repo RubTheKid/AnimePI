@@ -8,8 +8,14 @@ namespace AnimePI.Tests.Domain.Entities;
 public class UserTests
 {
     private User _user;
+    private object nome;
+    private string sobrenome;
     private UserName _userName;
     private Email _email;
+    private string mail;
+    private int idAnime;
+    private string tituloAnime;
+    private string urlAnime;
 
     [SetUp]
     public void Setup()
@@ -17,6 +23,14 @@ public class UserTests
         _userName = new UserName("Jader", "Cardoso");
         _email = new Email("jader@cardoso.com");
         _user = new User(_userName, _email);
+
+        nome = "Jader";
+        sobrenome = "Cardoso";
+        mail = "jader@cardoso.com";
+
+        idAnime = 1;
+        tituloAnime = "Anime 1";
+        urlAnime = "https://image.com/image.jpg";
     }
     [Test]
     public void Constructor_ShouldSetProps()
@@ -32,15 +46,15 @@ public class UserTests
 
         Assert.NotNull(_user);
         Assert.That(_userName, Is.EqualTo(_user.UserName));
-        Assert.That("Jader", Is.EqualTo(_user.UserName.FirstName));
-        Assert.That("Cardoso", Is.EqualTo(_user.UserName.Surname));
-        Assert.That("jader@cardoso.com", Is.EqualTo(_user.Email.Mail));
+        Assert.That(nome, Is.EqualTo(_user.UserName.FirstName));
+        Assert.That(sobrenome, Is.EqualTo(_user.UserName.Surname));
+        Assert.That(mail, Is.EqualTo(_user.Email.Mail));
     }
 
     [Test]
     public void AddFavorite_ShouldAddFavorite_WithValidData()
     {
-        _user.AddFavorite(1, "Anime 1", "https://image.com/image.jpg");
+        _user.AddFavorite(idAnime, tituloAnime, urlAnime);
 
         Assert.That(1, Is.EqualTo(_user.GetFavorites().Count));
         Assert.That(1, Is.EqualTo(_user.GetFavorites()[0].AnimeId));

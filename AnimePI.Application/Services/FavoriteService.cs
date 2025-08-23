@@ -28,7 +28,7 @@ public class FavoriteService
         {
             favorite = new Favorite(userId);
         }
-        
+
         favorite.AddAnime(animeId, animeTitle, animeImageUrl);
         return await _favoriteRepository.AddFavoriteAsync(favorite);
     }
