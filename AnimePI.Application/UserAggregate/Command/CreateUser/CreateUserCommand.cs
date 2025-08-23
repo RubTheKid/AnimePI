@@ -1,9 +1,8 @@
-﻿using AnimePI.Domain.Aggregates.UserAggregate;
-using MediatR;
+﻿using MediatR;
 
 namespace AnimePI.Application.UserAggregate.Command.CreateUser;
 
-public record CreateUserCommand : IRequest<User>
+public record CreateUserCommand : IRequest<CreateUserCommandResponse>
 {
     public string FirstName { get; init; }
     public string Surname { get; init; }

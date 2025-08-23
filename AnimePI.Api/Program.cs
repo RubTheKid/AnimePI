@@ -13,10 +13,37 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
+
+// Se rodando em Docker, usar o nome do container SQL Server
+if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true")
+{
+    if (connectionString.Contains("localhost"))
+    {
+        connectionString = connectionString.Replace("localhost", "sqlserver");
+        Console.WriteLine($"Running in Docker container, using connection string with sqlserver");
+    }
+    else if (connectionString.Contains("host.docker.internal"))
+    {
+        connectionString = connectionString.Replace("host.docker.internal", "sqlserver");
+        Console.WriteLine($"Running in Docker container, using connection string with sqlserver");
+    }
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-//options.UseSqlServer(connectionString));
-    options.UseInMemoryDatabase("AnimePIDb"));
+{
+    options.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+    });
+});
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
@@ -27,14 +54,34 @@ builder.Services.AddMediatR(cfg =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        try
+        {
+            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            context.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao aplicar migrações: {ex.Message}");
+        }
+    }
+}
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Só usar HTTPS redirection em produção, não em Docker/Development
+if (!app.Environment.IsDevelopment() && !app.Environment.IsEnvironment("Docker"))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 

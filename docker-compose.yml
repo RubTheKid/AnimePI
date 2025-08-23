@@ -1,0 +1,32 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: AnimePI.SqlServer
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Supersenha123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: AnimePI.Api/Dockerfile
+    container_name: AnimePI.Api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    restart: unless-stopped
+    user: "0:0"
+    command: ["dotnet", "AnimePI.Api.dll"]
+
+volumes:
+  sqlserver_data:

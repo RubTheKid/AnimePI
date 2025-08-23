@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimePI.Api", "AnimePI.Api\AnimePI.Api.csproj", "{47F70312-28B5-4C4D-9D50-E75C0BCC3B02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimePI.Api", "AnimePI.Api\AnimePI.Api.csproj", "{47F70312-28B5-4C4D-9D50-E75C0BCC3B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimePI.Application", "AnimePI.Application\AnimePI.Application.csproj", "{615A9EC5-2B78-4469-BA5B-E8F9A15221F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimePI.Application", "AnimePI.Application\AnimePI.Application.csproj", "{615A9EC5-2B78-4469-BA5B-E8F9A15221F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimePI.Domain", "AnimePI.Domain\AnimePI.Domain.csproj", "{C02B0818-B6A4-40D7-B553-F5475FDA662F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimePI.Domain", "AnimePI.Domain\AnimePI.Domain.csproj", "{C02B0818-B6A4-40D7-B553-F5475FDA662F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimePI.Infra", "AnimePI.Infra\AnimePI.Infra.csproj", "{0A7F0414-4399-40AC-B50A-CAD9C8B429E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimePI.Infra", "AnimePI.Infra\AnimePI.Infra.csproj", "{0A7F0414-4399-40AC-B50A-CAD9C8B429E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimePI.Tests", "AnimePI.Tests\AnimePI.Tests.csproj", "{E8D586A5-C1B4-4230-917D-6636C89CD67B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimePI.Tests", "AnimePI.Tests\AnimePI.Tests.csproj", "{E8D586A5-C1B4-4230-917D-6636C89CD67B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8B1A5D50-DE0D-4D17-A22B-77F50C918381}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,9 +1,8 @@
-﻿using AnimePI.Domain.Aggregates.UserAggregate;
-using MediatR;
+﻿using MediatR;
 
 namespace AnimePI.Application.UserAggregate.Query.GetUserById;
 
-public record GetUserByIdQuery : IRequest<User>
+public record GetUserByIdQuery : IRequest<GetUserByIdQueryResponse?>
 {
     public Guid Id { get; init; }
 }
