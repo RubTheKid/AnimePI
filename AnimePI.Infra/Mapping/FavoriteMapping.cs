@@ -1,5 +1,4 @@
 ﻿using AnimePI.Domain.Aggregates.FavoriteAggregate;
-using AnimePI.Domain.Aggregates.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,7 +11,7 @@ public class FavoriteMapping : IEntityTypeConfiguration<Favorite>
         builder.HasKey(f => f.UserId);
 
         builder.Property(f => f.UserId).IsRequired();
-       
+
         builder.Property(f => f.Animes).HasColumnType("nvarchar(max)").HasConversion(
             v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
             v => System.Text.Json.JsonSerializer.Deserialize<List<AnimeFavorite>>(v, (System.Text.Json.JsonSerializerOptions?)null) ?? new List<AnimeFavorite>());
