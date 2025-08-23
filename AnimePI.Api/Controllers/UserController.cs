@@ -1,6 +1,6 @@
-﻿using AnimePI.Application.Queries;
-using AnimePI.Application.UserAggregate.Command.CreateUser;
+﻿using AnimePI.Application.UserAggregate.Command.CreateUser;
 using AnimePI.Application.UserAggregate.Query.GetAllUsers;
+using AnimePI.Application.UserAggregate.Query.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

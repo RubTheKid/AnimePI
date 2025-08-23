@@ -5,12 +5,25 @@ USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+ENV DOTNET_RUNNING_IN_CONTAINER=true
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# instalar efcore tools
+RUN dotnet tool install --global dotnet-ef
+
+# Copiar arquivos de projeto
 COPY ["AnimePI.Api/AnimePI.Api.csproj", "AnimePI.Api/"]
+COPY ["AnimePI.Application/AnimePI.Application.csproj", "AnimePI.Application/"]
+COPY ["AnimePI.Domain/AnimePI.Domain.csproj", "AnimePI.Domain/"]
+COPY ["AnimePI.Infra/AnimePI.Infra.csproj", "AnimePI.Infra/"]
+
+# Restore
 RUN dotnet restore "./AnimePI.Api/AnimePI.Api.csproj"
+
+# Copiar código fonte
 COPY . .
 WORKDIR "/src/AnimePI.Api"
 RUN dotnet build "./AnimePI.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -21,5 +34,10 @@ RUN dotnet publish "./AnimePI.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 
 FROM base AS final
 WORKDIR /app
+
+# Copiar as ferramentas EF Core do build stage
+COPY --from=build /root/.dotnet/tools /root/.dotnet/tools
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "AnimePI.Api.dll"]
