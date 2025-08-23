@@ -6,6 +6,9 @@ namespace AnimePI.Tests.Domain.Entities;
 public class FavoriteTests
 {
     private Favorite _favorite;
+    private int idAnime;
+    private string tituloAnime;
+    private string urlAnime;
     private Guid _userId;
 
     [SetUp]
@@ -13,39 +16,46 @@ public class FavoriteTests
     {
         _userId = Guid.NewGuid();
         _favorite = new Favorite(_userId);
+
+        idAnime = 1;
+        tituloAnime = "Anime 1";
+        urlAnime = "https://image.com/image.jpg";
     }
 
     [Test]
     public void Constructor_ShouldInitializeWithUserId()
     {
-        Assert.That(_userId, Is.EqualTo(_favorite.UserId));
-        Assert.IsNotNull(_favorite.Animes);
-        Assert.IsEmpty(_favorite.Animes);
+        Assert.Multiple(() =>
+        {
+            Assert.That(_userId, Is.EqualTo(_favorite.UserId));
+            Assert.That(_favorite.Animes, Is.Not.Null);
+        });
+        Assert.That(_favorite.Animes, Is.Empty);
     }
 
     [Test]
     public void AddFavorite_ToUser_WithValidData()
     {
-        var animeId = 1;
-        var animeTitle = "teste";
-        var animeImageUrl = "https://teste.com/teste.jpg";
 
-        _favorite.AddAnime(animeId, animeTitle, animeImageUrl);
+        _favorite.AddAnime(idAnime, tituloAnime, urlAnime);
 
-        Assert.That(1, Is.EqualTo(_favorite.Animes.Count));
-        Assert.That(animeId, Is.EqualTo(_favorite.Animes.First().AnimeId));
-        Assert.That(animeTitle, Is.EqualTo(_favorite.Animes.First().AnimeTitle));
-        Assert.That(animeImageUrl, Is.EqualTo(_favorite.Animes.First().AnimeImageUrl));
+        Assert.Multiple(() =>
+        {
+            Assert.That(idAnime, Is.EqualTo(_favorite.Animes.Count));
+            Assert.That(idAnime, Is.EqualTo(_favorite.Animes.First().AnimeId));
+            Assert.That(tituloAnime, Is.EqualTo(_favorite.Animes.First().AnimeTitle));
+            Assert.That(urlAnime, Is.EqualTo(_favorite.Animes.First().AnimeImageUrl));
+        });
     }
 
 
- 
+
     [Test]
     public void RemoveFavorite_FromUser_ShouldBeValid()
     {
-        _favorite.AddAnime(1, "teste", "https://teste.com/teste.jpg");
+        _favorite.AddAnime(idAnime, tituloAnime, urlAnime);
         _favorite.RemoveAnime(1);
-        Assert.IsEmpty(_favorite.Animes);
+        Assert.That(_favorite.Animes, Is.Empty);
 
     }
 

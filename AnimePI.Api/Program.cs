@@ -1,4 +1,7 @@
+using AnimePI.Domain.Aggregates.FavoriteAggregate.Interfaces;
+using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Infra.Context;
+using AnimePI.Infra.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,9 +13,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+//options.UseSqlServer(connectionString));
+    options.UseInMemoryDatabase("AnimePIDb"));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+
+// Configurar MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(AnimePI.Application.AssemblyReference).Assembly));
 
 var app = builder.Build();
 
