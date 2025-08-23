@@ -1,0 +1,10 @@
+﻿using AnimePI.Domain.Aggregates.FavoriteAggregate;
+
+namespace AnimePI.Application.Interfaces;
+
+public interface IFavoriteService
+{
+    Task<List<Favorite>> GetUserFavoritesAsync(Guid userId);
+    Task<Favorite> AddFavoriteAsync(Guid userId, int animeId, string animeTitle, string animeImageUrl);
+    Task<bool> RemoveFavoriteAsync(Guid userId, int animeId);
+}

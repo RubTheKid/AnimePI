@@ -14,6 +14,28 @@ public class Favorite : BaseEntity
         UserId = userId;
     }
 
+    public void AddAnime(int animeId, string animeTitle, string animeImageUrl)
+    {
+        if (!Animes.Any(a => a.AnimeId == animeId))
+        {
+            Animes.Add(new AnimeFavorite(animeId, animeTitle, animeImageUrl));
+        }
+    }
+
+    public void RemoveAnime(int animeId)
+    {
+        var anime = Animes.FirstOrDefault(a => a.AnimeId == animeId);
+        if (anime != null)
+        {
+            Animes.Remove(anime);
+        }
+    }
+
+    public bool HasAnime(int animeId)
+    {
+        return Animes.Any(a => a.AnimeId == animeId);
+    }
+
 }
 
 public class AnimeFavorite
@@ -30,4 +52,5 @@ public class AnimeFavorite
         AnimeImageUrl = animeImageUrl;
         DateAdded = DateTime.Now;
     }
+
 }

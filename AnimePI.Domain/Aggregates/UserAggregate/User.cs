@@ -17,4 +17,29 @@ public class User : BaseEntity
         Email = email;
     }
 
+    public void AddFavorite(int animeId, string animeTitle, string animeImageUrl)
+    {
+        if (Favorites == null)
+        {
+            Favorites = new Favorite(Id);
+        }
+
+        Favorites.AddAnime(animeId, animeTitle, animeImageUrl);
+    }
+
+    public void RemoveFavorite(int animeId)
+    {
+        Favorites?.RemoveAnime(animeId);
+    }
+
+    public bool HasFavorite(int animeId)
+    {
+        return Favorites?.HasAnime(animeId) ?? false;
+    }
+
+    public List<AnimeFavorite> GetFavorites()
+    {
+        return Favorites?.Animes ?? new List<AnimeFavorite>();
+    }
+
 }
