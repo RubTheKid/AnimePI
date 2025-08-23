@@ -1,75 +1,120 @@
 ﻿using AnimePI.Application.UserAggregate.Command.CreateUser;
+using AnimePI.Application.UserAggregate.Command.DeleteUser;
+using AnimePI.Application.UserAggregate.Command.UpdateUser;
 using AnimePI.Application.UserAggregate.Query.GetAllUsers;
 using AnimePI.Application.UserAggregate.Query.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AnimePI.Api.Controllers
+namespace AnimePI.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public UserController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public UserController(IMediator mediator)
+    [HttpGet("/user/{id:guid}")]
+    public async Task<IActionResult> GetUser(Guid id)
+    {
+        try
         {
-            _mediator = mediator;
+            var query = new GetUserByIdQuery { Id = id };
+            var user = await _mediator.Send(query);
+
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            return Ok(user);
         }
-
-        [HttpGet("/user/{id:guid}")]
-        public async Task<IActionResult> GetUser(Guid id)
+        catch (Exception ex)
         {
-            try
-            {
-                var query = new GetUserByIdQuery { Id = id };
-                var user = await _mediator.Send(query);
-
-                if (user == null)
-                    return NotFound(new { message = "User not found" });
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
+            return StatusCode(500, new { message = ex.Message });
         }
+    }
 
-        [HttpGet("allusers")]
-        public async Task<IActionResult> GetAllUsers()
+    [HttpGet("allusers")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        try
         {
-            try
-            {
-                var query = new GetAllUsersQuery();
-                var users = await _mediator.Send(query);
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var query = new GetAllUsersQuery();
+            var users = await _mediator.Send(query);
+            return Ok(users);
         }
-
-        [HttpPost("new")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        catch (Exception ex)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
 
-                var user = await _mediator.Send(command);
-                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-            }
-            catch (ArgumentException ex)
+    [HttpPost("new")]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _mediator.Send(command);
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            command = command with { Id = id };
+
+            var user = await _mediator.Send(command);
+            return Ok(user);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        try
+        {
+            var command = new DeleteUserCommand { Id = id };
+            var result = await _mediator.Send(command);
+
+            if (result.Success)
             {
-                return BadRequest(new { message = ex.Message });
+                return Ok(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
+
+            return NotFound(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
         }
     }
 }

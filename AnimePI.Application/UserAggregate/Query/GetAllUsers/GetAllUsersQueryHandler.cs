@@ -1,10 +1,9 @@
-﻿using AnimePI.Domain.Aggregates.UserAggregate;
-using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
+﻿using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using MediatR;
 
 namespace AnimePI.Application.UserAggregate.Query.GetAllUsers;
 
-public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<User>>
+public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<GetAllUsersResponse>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,8 +12,14 @@ public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<Us
         _userRepository = userRepository;
     }
 
-    public async Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<List<GetAllUsersResponse>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        return await _userRepository.GetAllUsersAsync();
+        var users = await _userRepository.GetAllUsersAsync();
+
+        return users.Select(user => new GetAllUsersResponse(
+            user.Id,
+            user.UserName.FullName,
+            user.Email.Mail
+        )).ToList();
     }
 }

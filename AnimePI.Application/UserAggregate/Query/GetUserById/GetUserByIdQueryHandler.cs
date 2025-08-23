@@ -1,10 +1,9 @@
-﻿using AnimePI.Domain.Aggregates.UserAggregate;
-using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
+﻿using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using MediatR;
 
 namespace AnimePI.Application.UserAggregate.Query.GetUserById;
 
-public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
+public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, GetUserByIdQueryResponse?>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,8 +12,13 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, User>
         _userRepository = userRepository;
     }
 
-    public async Task<User> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetUserByIdQueryResponse?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        return await _userRepository.GetUserAsync(request.Id);
+        var user = await _userRepository.GetUserAsync(request.Id);
+
+        if (user == null)
+            return null;
+
+        return new GetUserByIdQueryResponse(user.Id, user.Email, user.DateCreated, user.UserName, user.Favorites?.Animes);
     }
 }
