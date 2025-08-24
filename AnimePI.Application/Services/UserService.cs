@@ -1,10 +1,11 @@
-﻿using AnimePI.Domain.Aggregates.UserAggregate;
+﻿using AnimePI.Application.Interfaces;
+using AnimePI.Domain.Aggregates.UserAggregate;
 using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Domain.Core;
 
 namespace AnimePI.Application.Services;
 
-public class UserService
+public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
 

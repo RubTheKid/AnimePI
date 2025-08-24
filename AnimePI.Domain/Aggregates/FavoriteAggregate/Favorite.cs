@@ -28,12 +28,27 @@ public class Favorite : BaseEntity
         if (anime != null)
         {
             Animes.Remove(anime);
+            DateUpdated = DateTime.UtcNow;
         }
     }
 
     public bool HasAnime(int animeId)
     {
         return Animes.Any(a => a.AnimeId == animeId);
+    }
+
+    public bool ToggleAnime(int animeId, string animeTitle, string animeImageUrl)
+    {
+        if (HasAnime(animeId))
+        {
+            RemoveAnime(animeId);
+            return false;
+        }
+        else
+        {
+            AddAnime(animeId, animeTitle, animeImageUrl);
+            return true;
+        }
     }
 
 }
