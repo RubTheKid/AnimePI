@@ -1,5 +1,6 @@
 using AnimePI.Application.Interfaces;
 using AnimePI.Application.Services;
+using AnimePI.Domain.Aggregates.AnimeAggregate.Interfaces;
 using AnimePI.Domain.Aggregates.FavoriteAggregate.Interfaces;
 using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Infra.Context;
@@ -51,6 +52,14 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAnimeRepository, AnimeRepository>();
+
+builder.Services.AddHttpClient<JikanApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.jikan.moe/v4/");
+    client.DefaultRequestHeaders.Add("User-Agent", "AnimePI/1.0");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
 
 
 // Configurar MediatR
