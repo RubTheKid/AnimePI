@@ -1,13 +1,8 @@
 ﻿using AnimePI.Application.Services;
-using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Domain.Aggregates.UserAggregate;
+using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Domain.Core;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnimePI.Tests.Services;
 

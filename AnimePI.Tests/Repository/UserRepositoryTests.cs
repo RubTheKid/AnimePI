@@ -1,9 +1,7 @@
 ﻿using AnimePI.Application.Services;
-using AnimePI.Application.UserAggregate.Command.DeleteUser;
 using AnimePI.Domain.Aggregates.UserAggregate;
 using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Domain.Core;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 

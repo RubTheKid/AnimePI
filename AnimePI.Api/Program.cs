@@ -1,3 +1,5 @@
+using AnimePI.Application.Interfaces;
+using AnimePI.Application.Services;
 using AnimePI.Domain.Aggregates.FavoriteAggregate.Interfaces;
 using AnimePI.Domain.Aggregates.UserAggregate.Interfaces;
 using AnimePI.Infra.Context;
@@ -47,6 +49,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 // Configurar MediatR
 builder.Services.AddMediatR(cfg =>

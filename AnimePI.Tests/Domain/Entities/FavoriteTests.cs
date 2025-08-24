@@ -48,8 +48,6 @@ public class FavoriteTests
         });
     }
 
-
-
     [Test]
     public void RemoveFavorite_FromUser_ShouldBeValid()
     {
@@ -58,6 +56,5 @@ public class FavoriteTests
         Assert.That(_favorite.Animes, Is.Empty);
 
     }
-
 
 }
