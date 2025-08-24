@@ -1,5 +1,4 @@
-﻿
-using AnimePI.Application.Interfaces;
+﻿using AnimePI.Application.Interfaces;
 using AnimePI.Domain.Aggregates.FavoriteAggregate;
 using AnimePI.Domain.Aggregates.FavoriteAggregate.Interfaces;
 
