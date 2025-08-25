@@ -2,12 +2,14 @@
 using AnimePI.Application.FavoriteAggregate.Command.RemoveFavorite;
 using AnimePI.Application.FavoriteAggregate.Query.GetUserFavorites;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimePI.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class FavoriteController : ControllerBase
 {
     private readonly IMediator _mediator;
