@@ -112,6 +112,26 @@ Password: Supersenha123!
 Database: AnimePI
 ```
 
+## Autenticação e Autorização
+
+A aplicação utiliza **ASP.NET Identity** com **JWT Bearer Tokens** para autenticação e autorização.
+
+### Usuário Administrador Padrão
+
+Durante o desenvolvimento, um usuário administrador é criado automaticamente:
+```
+ Email: admin@gmail.com
+ Senha: Senha123!
+```
+
+### Endpoints de Autenticação
+
+```http
+POST /api/auth/register - Registrar novo usuário
+POST /api/auth/login    - Fazer login e obter token JWT
+POST /api/auth/logout   - Logout (invalidar token)
+```
+
 ## Funcionalidades
 
 #### Gerenciamento de Usuários
@@ -131,10 +151,20 @@ Database: AnimePI
  * Cache local para performance
  * Análise de gêneros mais populares
 
+#### 🔐 Sistema de Autenticação
+ * Registro e login de usuários
+ * Autenticação JWT com Bearer Token
+ * Integração com ASP.NET Identity
+ * Usuário administrador padrão para desenvolvimento
+ * Proteção de endpoints sensíveis
+
  ## Tecnologias utilizadas
  * .NET 8 - Framework principal
+ * ASP.NET Identity - Sistema de autenticação
+ * JWT Bearer - Tokens de autenticação
  * EF Core - ORM
  * SQL Server - Banco de dados Relacional
+ * MediatR - Padrão CQRS
  * Docker - Containerização
  * Swagger - Documentação da API
  * HttpClient - Consumo de APIs Externas

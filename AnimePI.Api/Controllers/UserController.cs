@@ -4,6 +4,7 @@ using AnimePI.Application.UserAggregate.Command.UpdateUser;
 using AnimePI.Application.UserAggregate.Query.GetAllUsers;
 using AnimePI.Application.UserAggregate.Query.GetUserById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimePI.Api.Controllers;
@@ -20,6 +21,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("/user/{id:guid}")]
+    [Authorize]
     public async Task<IActionResult> GetUser(Guid id)
     {
         try
@@ -39,6 +41,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("allusers")]
+    [Authorize]
     public async Task<IActionResult> GetAllUsers()
     {
         try
@@ -75,6 +78,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
     {
         try

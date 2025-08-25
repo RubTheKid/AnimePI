@@ -1,11 +1,13 @@
 ﻿using AnimePI.Application.Services;
 using AnimePI.Domain.Aggregates.AnimeAggregate.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AnimePI.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AnimeController : ControllerBase
 {
     private readonly JikanApiService _jikanApiService;
